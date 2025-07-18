@@ -42,6 +42,7 @@ public class LearningRecordDto {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+    //checking
     @Override
     public String toString() {
         return "LearningRecordDto{" +
