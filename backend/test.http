@@ -1,0 +1,12 @@
+### Test Add Record
+POST http://localhost:8080/api/records
+Content-Type: application/json
+
+{
+  "topic": "Spring Boot",
+  "notes": "Learned about REST controllers",
+  "date": "2025-07-16"
+}
+
+### Test Get All Records
+GET http://localhost:8080/api/records
