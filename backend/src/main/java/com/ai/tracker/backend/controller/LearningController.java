@@ -3,6 +3,7 @@ package com.ai.tracker.backend.controller;
 import com.ai.tracker.backend.dto.LearningRecordDto;
 import com.ai.tracker.backend.model.LearningRecord;
 import com.ai.tracker.backend.service.LearningService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class LearningController {
     }
 
     @PostMapping
-    public LearningRecord addRecord(@RequestBody LearningRecordDto dto) {
+    public LearningRecord addRecord( @RequestBody @Valid LearningRecordDto dto) {
         System.out.println("Received DTO: " + dto);
         return learningService.addRecord(dto);
     }
