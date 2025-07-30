@@ -1,8 +1,14 @@
 package com.ai.tracker.backend.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "learning_record")
 public class LearningRecord {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String topic;
     private String notes;
