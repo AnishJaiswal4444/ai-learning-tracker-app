@@ -12,6 +12,9 @@ import java.util.List;
 @Service
 public class LearningService {
 
+    @Autowired
+    private KafkaProducerService kafkaProducer;
+
     private final LearningRecordRepository repository;
     @Autowired
     public LearningService(LearningRecordRepository repository) {
@@ -24,7 +27,13 @@ public class LearningService {
                 dto.getNotes(),
                 dto.getDate() != null ? dto.getDate() : LocalDate.now()
         );
-        return repository.save(record);
+        LearningRecord saved = repository.save(record);
+
+        // Send message to Kafka
+        String kafkaMessage = "New learning record added: " + saved.getTopic();
+        kafkaProducer.sendMessage("learning-records", kafkaMessage);
+
+        return saved;
     }
 
     public List<LearningRecord> getAllRecords() {
