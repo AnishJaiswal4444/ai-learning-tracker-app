@@ -7,6 +7,7 @@ import java.time.LocalDate;
 @Table(name = "learning_record")
 public class LearningRecord {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
