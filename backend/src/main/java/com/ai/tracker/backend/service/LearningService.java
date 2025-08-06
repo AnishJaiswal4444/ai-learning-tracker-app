@@ -3,6 +3,7 @@ package com.ai.tracker.backend.service;
 import com.ai.tracker.backend.dto.LearningRecordDto;
 import com.ai.tracker.backend.model.LearningRecord;
 import com.ai.tracker.backend.repository.LearningRecordRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,12 @@ public class LearningService {
     private KafkaProducerService kafkaProducer;
 
     private final LearningRecordRepository repository;
+    private final ObjectMapper objectMapper;
+
     @Autowired
-    public LearningService(LearningRecordRepository repository) {
+    public LearningService(LearningRecordRepository repository, ObjectMapper objectMapper) {
         this.repository = repository;
+        this.objectMapper = objectMapper;
     }
     public LearningRecord addRecord(LearningRecordDto dto) {
         LearningRecord record = new LearningRecord(
@@ -29,10 +33,13 @@ public class LearningService {
         );
         LearningRecord saved = repository.save(record);
 
-        // Send message to Kafka
-        String kafkaMessage = "New learning record added: " + saved.getTopic();
-        kafkaProducer.sendMessage("learning-records", kafkaMessage);
-
+        try {
+            // Serialize DTO to JSON and send to Kafka
+            String jsonMessage = objectMapper.writeValueAsString(dto);
+            kafkaProducer.sendMessage("learning-records", jsonMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return saved;
     }
 
