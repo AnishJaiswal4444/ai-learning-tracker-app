@@ -1,11 +1,13 @@
 package com.ai.tracker.backend.model;
 
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "learning_record")
-public class LearningRecord {
+public class LearningRecord implements Serializable {
 
 
     @Id

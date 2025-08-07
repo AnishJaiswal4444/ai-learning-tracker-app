@@ -5,6 +5,8 @@ import com.ai.tracker.backend.model.LearningRecord;
 import com.ai.tracker.backend.repository.LearningRecordRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,6 +26,7 @@ public class LearningService {
         this.repository = repository;
         this.objectMapper = objectMapper;
     }
+    @CacheEvict(value = "learningRecords", allEntries = true)
     public LearningRecord addRecord(LearningRecordDto dto) {
         LearningRecord record = new LearningRecord(
                 null,
@@ -42,7 +45,7 @@ public class LearningService {
         }
         return saved;
     }
-
+    @Cacheable("learningRecords")
     public List<LearningRecord> getAllRecords() {
         return repository.findAll();
     }
