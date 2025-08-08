@@ -5,6 +5,7 @@ import com.ai.tracker.backend.model.LearningRecord;
 import com.ai.tracker.backend.service.LearningService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,4 +31,10 @@ public class LearningController {
     public List<LearningRecord> getAllRecords() {
         return learningService.getAllRecords();
     }
+
+    @GetMapping("/secure")
+    public ResponseEntity<String> secureLearningEndpoint() {
+        return ResponseEntity.ok("✅ Accessed secure learning endpoint!");
+    }
+
 }
